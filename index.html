@@ -16,12 +16,16 @@
 <h3>Load a list of users into a dropdown menu using AJAX.</h3>
 <select id="user_dropdown" class="form-control">
     <option value="">Select a user</option>
+    <option value="">Select a user</option>
+    <option value="">Select a user</option>
 </select>
 
 <hr/>
 
 <!--User Id-->
 <!--Name-->
+
+<h1 class="text-center">Day 1: Task 2</h1>
 
 <!-- Button trigger save modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -95,15 +99,18 @@
         crossorigin="anonymous"></script>
 <script>
 
+    const BASE_URL = "URL"
+    const KEY = "API KEY"
+
     // function fetchData() {
     // }
 
     const fetchData = () => {
         $.ajax({
-            url: "https://e2b7ccf16b924a4fa93b503d3ce155f0.weavy.io/api/users",
+            url: `${BASE_URL}/api/users`,
             type: "GET",
             headers: {
-                "Authorization": "Bearer "
+                "Authorization": `Bearer ${KEY}`
             },
             success: (res) => {
                 console.log(res)
@@ -113,7 +120,12 @@
 
                 const tblUser = $('#user_table_body')
                 tblUser.empty()
+
+                const dropdown = $('#user_dropdown')
+                dropdown.empty()
+
                 userList.forEach(user => {
+
                     tblUser.append(`
                         <tr>
                             <td>${user.id}</td>
@@ -125,6 +137,10 @@
                                 <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.uid}')">Delete</button>
                             </td>
                         </tr>
+                    `)
+
+                    dropdown.append(`
+                        <option value="">${user.display_name}</option>
                     `)
                 })
             },
@@ -138,10 +154,10 @@
     const deleteUser = (userId) => {
         if (confirm("Are you sure..?")) {
             $.ajax({
-                url: `https://e2b7ccf16b924a4fa93b503d3ce155f0.weavy.io/api/users/${userId}`,
+                url: `${BASE_URL}/api/users/${userId}`,
                 type: "DELETE",
                 headers: {
-                    "Authorization": "Bearer "
+                    "Authorization": `Bearer ${KEY}`
                 },
                 success: (res) => {
                     console.log(res)
@@ -177,10 +193,10 @@
         }
 
         $.ajax({
-            url: "https://e2b7ccf16b924a4fa93b503d3ce155f0.weavy.io/api/users",
+            url: `${BASE_URL}/api/users`,
             type: "POST",
             headers: {
-                'Authorization': 'Bearer ',
+                'Authorization': `Bearer ${KEY}`,
                 'Content-Type': "application/json"
             },
             // JavaScript Object ==> JavaScript Object Notation (JSON)
@@ -209,11 +225,11 @@
         }
 
         $.ajax({
-            // url: "https://e2b7ccf16b924a4fa93b503d3ce155f0.weavy.io/api/users/" + userId,
-            url: `https://e2b7ccf16b924a4fa93b503d3ce155f0.weavy.io/api/users/${userId}`,
+            // url: ${BASE_URL} + "/api/users/" + userId,
+            url: `${BASE_URL}/api/users/${userId}`,
             type: "PATCH", // PUT, PATCH
             headers: {
-                'Authorization': 'Bearer ',
+                'Authorization': `Bearer ${KEY}`,
                 'Content-Type': "application/json"
             },
             data: JSON.stringify(userData),
